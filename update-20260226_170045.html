@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日报摘要 - 2026-02-26 17:00:45</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+        }
+        .sidebar-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .history-item {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .history-item a {
+            display: block;
+            padding: 15px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .history-item a:hover {
+            background: #f8f9ff;
+        }
+        .history-item.active a {
+            background: #667eea;
+            color: white;
+            font-weight: 500;
+        }
+        .history-time {
+            font-size: 0.9rem;
+            display: block;
+        }
+        .main-content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        header .date {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        .category-section {
+            margin-bottom: 40px;
+        }
+        .category-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #764ba2;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+        }
+        .source-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .source-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .source-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+        .item-count {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .summary {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        .summary h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .summary-content {
+            white-space: pre-line;
+        }
+        .items-list {
+            list-style: none;
+        }
+        .item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .item:last-child {
+            border-bottom: none;
+        }
+        .item-title {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .item-title a {
+            color: #333;
+            text-decoration: none;
+        }
+        .item-title a:hover {
+            color: #667eea;
+        }
+        .item-meta {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        .item-description {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .external-link {
+            display: inline-block;
+            margin-left: 8px;
+            color: #667eea;
+            font-size: 0.8rem;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 10px;
+            }
+            header {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.5rem;
+            }
+            .source-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar with history -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>📚 历史摘要</h2>
+        </div>
+        <ul class="history-list">
+            
+                
+                <li class="history-item ">
+                    <a href="update-20260226_165030.html">
+                        <span class="history-time">2026-02-26 16:50:30</span>
+                    </a>
+                </li>
+                
+                <li class="history-item ">
+                    <a href="update-20260226_162534.html">
+                        <span class="history-time">2026-02-26 16:25:34</span>
+                    </a>
+                </li>
+                
+                <li class="history-item ">
+                    <a href="digest-2026-02-26.html">
+                        <span class="history-time">2026-02-26 (日报)</span>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+
+    <!-- Main content area -->
+    <div class="main-content">
+    <div class="container">
+        <header>
+            <h1>📰 日报摘要</h1>
+            <div class="date">生成时间：2026-02-26 17:00:45</div>
+        </header>
+
+        
+        <div class="category-section">
+            <h2 class="category-title">📚 AI思想领袖</h2>
+            
+            
+            <div class="source-card">
+                <div class="source-header">
+                    <h2 class="source-name">Simon Willison (AI/LLM)</h2>
+                    <span class="item-count">5 条</span>
+                </div>
+                
+                <div class="summary">
+                    <h3>📋 摘要</h3>
+                    <div class="summary-content">- Gemini 和 Google 地图等服务使用相同的 API 密钥，但与设计为公开的 Google 地图 API 密钥不同，Gemini 的 API 密钥可以访问更敏感的信息，这引发了安全问题。
+- Benedict Evans 指出，如果用户每周只使用几次 AI 工具，并且在日常生活中找不到用途，那么这些工具并没有真正改变他们的生活。OpenAI 也承认存在“能力差距”。
+- tldraw 项目面临的问题是，全面的测试套件可能足以从零开始重新构建任何开源库，甚至可以用不同的语言实现，这对开源软件的安全性和知识产权构成了威胁。
+- Claude Code 推出了新的远程控制功能，允许用户通过网页、iOS 或桌面应用程序发送指令到本地运行的会话中，尽管目前体验尚不稳定。
+- Simon Willison 在 Social Science FOO Camp 上做了一个关于未来 LLM（大型语言模型）发展的演讲，题目为“2026 年 2 月版 LLM 状态”，探讨了技术如何在未来几年内发生巨大变化。</div>
+                </div>
+                
+                <ul class="items-list">
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://simonwillison.net/2026/Feb/26/google-api-keys/#atom-everything" target="_blank">Google API Keys Weren&#39;t Secrets. But then Gemini Changed the Rules.</a>
+                            <a href="https://simonwillison.net/2026/Feb/26/google-api-keys/#atom-everything" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T04:28:55+00:00</div>
+                        
+                        
+                        <div class="item-description">Google API Keys Weren&amp;#x27;t Secrets. But then Gemini Changed the Rules. Yikes! It turns out Gemini and Google Maps (and other services) share the same API keys... but Google Maps API keys are designe...</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://simonwillison.net/2026/Feb/26/benedict-evans/#atom-everything" target="_blank">Quoting Benedict Evans</a>
+                            <a href="https://simonwillison.net/2026/Feb/26/benedict-evans/#atom-everything" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T03:44:56+00:00</div>
+                        
+                        
+                        <div class="item-description">If people are only using this a couple of times a week at most, and can’t think of anything to do with it on the average day, it hasn’t changed their life. OpenAI itself admits the problem, talking ab...</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://simonwillison.net/2026/Feb/25/closed-tests/#atom-everything" target="_blank">tldraw issue: Move tests to closed source repo</a>
+                            <a href="https://simonwillison.net/2026/Feb/25/closed-tests/#atom-everything" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T21:06:53+00:00</div>
+                        
+                        
+                        <div class="item-description">tldraw issue: Move tests to closed source repo It&#39;s become very apparent over the past few months that a comprehensive test suite is enough to build a completely fresh implementation of any open sourc...</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://simonwillison.net/2026/Feb/25/claude-code-remote-control/#atom-everything" target="_blank">Claude Code Remote Control</a>
+                            <a href="https://simonwillison.net/2026/Feb/25/claude-code-remote-control/#atom-everything" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T17:33:24+00:00</div>
+                        
+                        
+                        <div class="item-description">Claude Code Remote Control New Claude Code feature dropped yesterday: you can now run a &#34;remote control&#34; session on your computer and then use the Claude Code for web interfaces (on web, iOS and nativ...</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://simonwillison.net/2026/Feb/25/present/#atom-everything" target="_blank">I vibe coded my dream macOS presentation app</a>
+                            <a href="https://simonwillison.net/2026/Feb/25/present/#atom-everything" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T16:46:19+00:00</div>
+                        
+                        
+                        <div class="item-description">I gave a talk this weekend at Social Science FOO Camp in Mountain View. The event was a classic unconference format where anyone could present a talk without needing to propose it in advance. I grabbe...</div>
+                        
+                    </li>
+                    
+                </ul>
+            </div>
+            
+        </div>
+        
+        <div class="category-section">
+            <h2 class="category-title">📚 AI研究与官方博客</h2>
+            
+            
+            <div class="source-card">
+                <div class="source-header">
+                    <h2 class="source-name">Google AI Blog</h2>
+                    <span class="item-count">2 条</span>
+                </div>
+                
+                <div class="summary">
+                    <h3>📋 摘要</h3>
+                    <div class="summary-content">- Google 搜索界面引入了 AI 驱动的工具，包括“AI 概览”，它可以分解服装的各个组成部分，并提供一个虚拟的“试穿”按钮，让用户在不同体型上可视化服装效果。
+- 三星 Galaxy S26 将搭载更智能的 Android 系统，展示了一位身穿红色高领衫、迷彩短裤和黑色靴子的女性站在红色墙前的照片，旁边智能手机显示了带有图像识别结果的 Google 搜索页面。</div>
+                </div>
+                
+                <ul class="items-list">
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://blog.google/products-and-platforms/products/search/circle-to-search-february-2026/" target="_blank">See the whole picture and find the look with Circle to Search</a>
+                            <a href="https://blog.google/products-and-platforms/products/search/circle-to-search-february-2026/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T18:00:00+00:00</div>
+                        
+                        
+                        <div class="item-description">Google Search interface featuring AI-powered tools including an &#34;AI Overview&#34; that breaks down an outfit&#39;s components and a virtual &#34;Try it on&#34; button that visualizes apparel on diverse body types.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://blog.google/products-and-platforms/platforms/android/samsung-unpacked-2026/" target="_blank">A more intelligent Android on Samsung Galaxy S26</a>
+                            <a href="https://blog.google/products-and-platforms/platforms/android/samsung-unpacked-2026/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T18:00:00+00:00</div>
+                        
+                        
+                        <div class="item-description">A woman in a red turtleneck, camouflage shorts, and black boots poses against a bright red wall, while a smartphone to her right displays a Google search page with image recognition results.</div>
+                        
+                    </li>
+                    
+                </ul>
+            </div>
+            
+        </div>
+        
+        <div class="category-section">
+            <h2 class="category-title">📚 AI行业新闻</h2>
+            
+            
+            <div class="source-card">
+                <div class="source-header">
+                    <h2 class="source-name">TechCrunch AI</h2>
+                    <span class="item-count">5 条</span>
+                </div>
+                
+                <div class="summary">
+                    <h3>📋 摘要</h3>
+                    <div class="summary-content">- Salesforce CEO Marc Benioff 在公司发布稳健的年度财报后，积极应对有关AI对其业务影响的担忧。
+- Gushwork 通过种子轮融资获得900万美元，由SIG和Lightspeed领投，其基于AI的搜索工具如ChatGPT已开始吸引早期客户。
+- Anthropic 收购了西雅图的AI初创公司Vercept，后者开发了复杂的代理工具，包括能够像真人一样在应用程序中完成任务的计算机使用代理。
+- Nvidia 在资本支出创纪录的情况下再次实现季度业绩新高，CEO Jensen Huang指出对代币的需求呈指数级增长。
+- 白宫希望AI公司承担电费上涨的成本，大多数大型云计算服务商已经公开承诺会这样做。</div>
+                </div>
+                
+                <ul class="items-list">
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://techcrunch.com/2026/02/25/salesforce-ceo-marc-benioff-this-isnt-our-first-saaspocalypse/" target="_blank">Salesforce CEO Marc Benioff: This isn’t our first SaaSpocalypse</a>
+                            <a href="https://techcrunch.com/2026/02/25/salesforce-ceo-marc-benioff-this-isnt-our-first-saaspocalypse/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T01:59:12+00:00</div>
+                        
+                        
+                        <div class="item-description">Salesforce reported a solid year-end earnings and then pulled out all the stops to ward off more talk of the death of its business to AI.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://techcrunch.com/2026/02/25/gushwork-bets-on-ai-search-for-customer-leads-and-early-results-are-emerging/" target="_blank">Gushwork bets on AI search for customer leads — and early results are emerging</a>
+                            <a href="https://techcrunch.com/2026/02/25/gushwork-bets-on-ai-search-for-customer-leads-and-early-results-are-emerging/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T00:00:00+00:00</div>
+                        
+                        
+                        <div class="item-description">Gushwork has raised $9 million in a seed round led by SIG and Lightspeed. The startup has seen early customer traction from AI search tools like ChatGPT.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://techcrunch.com/2026/02/25/anthropic-acquires-vercept-ai-startup-agents-computer-use-founders-investors/" target="_blank">Anthropic acquires computer-use AI startup Vercept after Meta poached one of its founders</a>
+                            <a href="https://techcrunch.com/2026/02/25/anthropic-acquires-vercept-ai-startup-agents-computer-use-founders-investors/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T23:49:19+00:00</div>
+                        
+                        
+                        <div class="item-description">Seattle-based Vercept developed complex agentic tools, including a computer-use agent that could complete tasks inside applications like a person with a laptop would.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://techcrunch.com/2026/02/25/nvidia-earnings-record-capex-spend-ai/" target="_blank">Nvidia has another record quarter amid record capex spends</a>
+                            <a href="https://techcrunch.com/2026/02/25/nvidia-earnings-record-capex-spend-ai/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T23:04:42+00:00</div>
+                        
+                        
+                        <div class="item-description">&#34;The demand for tokens in the world has gone completely exponential,&#34; Nvidia CEO Jensen Huang said about the company&#39;s earnings.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://techcrunch.com/2026/02/25/the-white-house-wants-ai-companies-to-cover-rate-hikes-most-have-already-said-they-would/" target="_blank">The White House wants AI companies to cover rate hikes. Most have already said they would.</a>
+                            <a href="https://techcrunch.com/2026/02/25/the-white-house-wants-ai-companies-to-cover-rate-hikes-most-have-already-said-they-would/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T20:42:14+00:00</div>
+                        
+                        
+                        <div class="item-description">Many hyperscalers have already made public commitments to cover electricity cost increases.</div>
+                        
+                    </li>
+                    
+                </ul>
+            </div>
+            
+            <div class="source-card">
+                <div class="source-header">
+                    <h2 class="source-name">Towards Data Science</h2>
+                    <span class="item-count">4 条</span>
+                </div>
+                
+                <div class="summary">
+                    <h3>📋 摘要</h3>
+                    <div class="summary-content">- 使用Feast特征存储和Ray分布式计算框架来扩展生产机器学习系统中的特征工程管道，提高数据处理效率和模型性能。
+- 通过libfabric、DMA-BUF和HCCL等技术在云端主机NIC上实现类似RDMA的性能，解决Gaudi云性能中的主机内存瓶颈问题，恢复分布式训练的可扩展性。
+- 从基本原理出发，结合实例和直观的视觉解释，详细阐述音频中的混叠现象，帮助理解数字音频中的基础失真问题。
+- 介绍如何定义内部信用风险模型（如IRB违约概率模型）的建模范围，包括数据集构建方法和注意事项。</div>
+                </div>
+                
+                <ul class="items-list">
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://towardsdatascience.com/scaling-feature-engineering-pipelines-with-feast-and-ray/" target="_blank">Scaling Feature Engineering Pipelines with Feast and Ray</a>
+                            <a href="https://towardsdatascience.com/scaling-feature-engineering-pipelines-with-feast-and-ray/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T20:42:25+00:00</div>
+                        
+                        
+                        <div class="item-description">Utilizing feature stores like Feast and distributed compute frameworks like Ray in production machine learning systems The post Scaling Feature Engineering Pipelines with Feast and Ray appeared first ...</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://towardsdatascience.com/breaking-the-host-memory-bottleneck/" target="_blank">Breaking the Host Memory Bottleneck: How Peer Direct Transformed Gaudi’s Cloud Performance</a>
+                            <a href="https://towardsdatascience.com/breaking-the-host-memory-bottleneck/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T18:43:18+00:00</div>
+                        
+                        
+                        <div class="item-description">Engineering RDMA-like performance over cloud host NICs using libfabric, DMA-BUF, and HCCL to restore distributed training scalability The post Breaking the Host Memory Bottleneck: How Peer Direct Tran...</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://towardsdatascience.com/aliasing-in-audio-easily-explained-from-wagon-wheels-to-waveforms/" target="_blank">Aliasing in Audio, Easily Explained: From Wagon Wheels to Waveforms</a>
+                            <a href="https://towardsdatascience.com/aliasing-in-audio-easily-explained-from-wagon-wheels-to-waveforms/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T13:30:00+00:00</div>
+                        
+                        
+                        <div class="item-description">Understanding the foundational distortion of digital audio from first principles, with worked examples and visual intuition The post Aliasing in Audio, Easily Explained: From Wagon Wheels to Waveforms...</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://towardsdatascience.com/how-to-define-the-modeling-scope-of-an-internal-credit-risk-model/" target="_blank">How to Define the Modeling Scope of an Internal Credit Risk Model</a>
+                            <a href="https://towardsdatascience.com/how-to-define-the-modeling-scope-of-an-internal-credit-risk-model/" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-25T12:00:00+00:00</div>
+                        
+                        
+                        <div class="item-description">Dataset construction for Internal Ratings-Based (IRB) Probability of Default (PD) models The post How to Define the Modeling Scope of an Internal Credit Risk Model appeared first on Towards Data Scien...</div>
+                        
+                    </li>
+                    
+                </ul>
+            </div>
+            
+        </div>
+        
+        <div class="category-section">
+            <h2 class="category-title">📚 金融与市场</h2>
+            
+            
+            <div class="source-card">
+                <div class="source-header">
+                    <h2 class="source-name">CNBC Technology</h2>
+                    <span class="item-count">5 条</span>
+                </div>
+                
+                <div class="summary">
+                    <h3>📋 摘要</h3>
+                    <div class="summary-content">- 英伟达尚未确认向中国出口美国批准的AI芯片，尽管华盛顿已放宽了对先进芯片出口的限制，英伟达担心这可能让本地竞争对手占据市场。
+- 英伟达在财报中给出了超出预期的第一季度业绩指引，预计增长将达到一年来最快水平。
+- 尽管英伟达股价在盘后交易中变动不大，但其财报表现仍然令人印象深刻，显示了强劲的增长势头和乐观的前景。
+- Salesforce的财报未显示出AI对其业务的影响，但投资者仍对该技术可能颠覆传统企业软件公司的潜在威胁感到担忧，导致股价在盘后交易中下跌。
+- 英伟达CEO黄仁勋就国防部与其战略伙伴Anthropic之间的分歧发表评论，认为这“不是世界末日”。</div>
+                </div>
+                
+                <ul class="items-list">
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://www.cnbc.com/2026/02/26/nvidia-china-chip-sales-export-controls-ai-competition.html" target="_blank">Nvidia still hasn&#39;t sold its U.S.-approved China AI chips — and it’s worried local AI rivals could take over</a>
+                            <a href="https://www.cnbc.com/2026/02/26/nvidia-china-chip-sales-export-controls-ai-competition.html" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T08:23:22+00:00</div>
+                        
+                        
+                        <div class="item-description">The U.S. chipmaker has yet to confirm shipments to China despite Washington easing restrictions on exports of advanced chips.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://www.cnbc.com/2026/02/25/nvidia-forecast-points-to-accelerating-growth-vera-rubin-hits-market.html" target="_blank">Nvidia&#39;s forecast points to accelerating growth, as Vera Rubin starts hitting market</a>
+                            <a href="https://www.cnbc.com/2026/02/25/nvidia-forecast-points-to-accelerating-growth-vera-rubin-hits-market.html" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T01:55:33+00:00</div>
+                        
+                        
+                        <div class="item-description">In its earnings report, Nvidia gave guidance for the first quarter that sailed past estimates, with growth projected to reach its fastest in a year.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://www.cnbc.com/2026/02/25/nvidia-keeps-the-ai-party-alive-with-a-booming-quarter-and-even-better-outlook.html" target="_blank">Nvidia keeps the AI party alive with a booming quarter and even better outlook</a>
+                            <a href="https://www.cnbc.com/2026/02/25/nvidia-keeps-the-ai-party-alive-with-a-booming-quarter-and-even-better-outlook.html" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T00:57:40+00:00</div>
+                        
+                        
+                        <div class="item-description">Nvidia shares weren&#39;t moving much in extended trading. But make no mistake, the chipmaker&#39;s earnings report was impressive.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://www.cnbc.com/2026/02/25/ai-disruption-didnt-show-up-in-salesforce-results-but-the-fears-are-hard-to-shake.html" target="_blank">AI disruption didn&#39;t show up in Salesforce results. But the fears are hard to shake</a>
+                            <a href="https://www.cnbc.com/2026/02/25/ai-disruption-didnt-show-up-in-salesforce-results-but-the-fears-are-hard-to-shake.html" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T00:43:21+00:00</div>
+                        
+                        
+                        <div class="item-description">The stock dropped in after-hours trading as investors remained anxious about the potential of AI disrupting traditional enterprise software companies.</div>
+                        
+                    </li>
+                    
+                    <li class="item">
+                        <div class="item-title">
+                            <a href="https://www.cnbc.com/2026/02/26/huang-nvidia-anthropic-pentagon-hegseth-ai.html" target="_blank">Nvidia’s Huang says any Pentagon–Anthropic rift is &#39;not the end of the world&#39;</a>
+                            <a href="https://www.cnbc.com/2026/02/26/huang-nvidia-anthropic-pentagon-hegseth-ai.html" target="_blank" class="external-link">↗</a>
+                        </div>
+                        
+                        <div class="item-meta">2026-02-26T04:33:28+00:00</div>
+                        
+                        
+                        <div class="item-description">Nvidia CEO Jensen Huang weighed in on a conflict between the Defense Department and its strategic partner on Thursday, saying it&#39;s “not the end of the world.”</div>
+                        
+                    </li>
+                    
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        <footer>
+            生成于 2026-02-26 17:00:45 | RSS 日报摘要
+        </footer>
+    </div>
+    </div>
+</body>
+</html>
